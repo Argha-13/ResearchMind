@@ -19,12 +19,6 @@ All results are displayed in a clean Streamlit UI with a persistent research his
 
 ---
 
-## Demo
-
-![ResearchMind UI](https://researchmind-argha.streamlit.app/)
-
----
-
 ## Tech Stack
 
 | Layer | Technology |
