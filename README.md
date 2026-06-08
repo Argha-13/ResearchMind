@@ -21,7 +21,7 @@ All results are displayed in a clean Streamlit UI with a persistent research his
 
 ## Demo
 
-![ResearchMind UI](assets/demo.png)
+![ResearchMind UI](https://researchmind-argha.streamlit.app/)
 
 ---
 
