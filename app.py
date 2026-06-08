@@ -18,7 +18,7 @@ st.set_page_config(
     page_title="ResearchMind",
     page_icon="⬡",
     layout="wide",
-    initial_sidebar_state="expanded",
+    initial_sidebar_state="collapsed",
 )
 
 # ── CSS ────────────────────────────────────────────────────────────────────────
@@ -247,8 +247,8 @@ def extract_urls(text):
     return re.findall(r'https?://[^\s\n"\']+', text)
 
 def extract_score(feedback):
-    match = re.search(r'Score:\s*(\d+)/10', feedback)
-    return int(match.group(1)) if match else 0
+    match = re.search(r'Score:\s*(\d+(?:\.\d+)?)/10', feedback)
+    return float(match.group(1)) if match else 0.0
 
 def extract_areas_to_improve(feedback):
     match = re.search(r'Areas to Improve:(.*?)(?:One line verdict:|$)', feedback, re.DOTALL)
@@ -309,7 +309,7 @@ with st.sidebar:
         """, unsafe_allow_html=True)
     else:
         for s in reversed(sessions[-10:]):
-            score_val = int(s['score'].split('/')[0]) if '/' in s['score'] else 0
+            score_val = float(s['score'].split('/')[0]) if '/' in s['score'] else 0
             col = score_color(score_val)
             st.markdown(f"""
             <div style="background:var(--bg3);border:1px solid var(--border);
@@ -362,7 +362,7 @@ st.markdown("""
 
 # ── Session state ──────────────────────────────────────────────────────────────
 for k, v in [("results", {}), ("running", False), ("done", False),
-             ("current_step", ""), ("iteration", 0), ("final_score", 0)]:
+             ("current_step", ""), ("iteration", 0), ("final_score", 0.0)]:
     if k not in st.session_state:
         st.session_state[k] = v
 
@@ -455,7 +455,7 @@ with col_right:
             <div style="font-family:var(--mono);font-size:0.62rem;color:var(--text-dim);
                         letter-spacing:0.15em;margin-bottom:0.3rem;">FINAL SCORE</div>
             <div style="font-family:var(--font);font-size:2rem;font-weight:800;color:{col};">
-                {sc}<span style="font-size:1rem;font-weight:400;color:var(--text-dim);">/10</span>
+                {sc:g}<span style="font-size:1rem;font-weight:400;color:var(--text-dim);">/10</span>
             </div>
         </div>
         """, unsafe_allow_html=True)
@@ -471,7 +471,7 @@ if run_btn:
         st.session_state.done = False
         st.session_state.current_step = ""
         st.session_state.iteration = 0
-        st.session_state.final_score = 0
+        st.session_state.final_score = 0.0
         st.rerun()
 
 
@@ -661,7 +661,7 @@ if r and st.session_state.done:
                 </span>
                 <span style="font-family:var(--font);font-size:1.6rem;
                              font-weight:800;color:{col};">
-                    {sc}<span style="font-size:1rem;font-weight:400;color:var(--text-dim);">/10</span>
+                    {sc:g}<span style="font-size:1rem;font-weight:400;color:var(--text-dim);">/10</span>
                 </span>
             </div>
             <div class="report-body">
