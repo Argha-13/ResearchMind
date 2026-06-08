@@ -4,7 +4,6 @@ from langchain_community.utilities import WikipediaAPIWrapper, ArxivAPIWrapper
 import os
 import ssl
 import certifi
-import wikipedia
 import arxiv
 from arxiv import Search as ArxivSearch
 from bs4 import BeautifulSoup
